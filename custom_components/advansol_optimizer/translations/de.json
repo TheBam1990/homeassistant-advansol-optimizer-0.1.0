@@ -1,0 +1,66 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "AdvanSol Optimierer",
+        "description": "Verbindung zur TCP-RS485-Bridge des AdvanSol-Optimierer-Controllers herstellen.",
+        "data": {
+          "host": "Host",
+          "tcp_port": "TCP-Port",
+          "poll_interval": "Abfrageintervall in Sekunden",
+          "request_timeout": "Anfrage-Timeout in Sekunden",
+          "switch_retries": "Schaltversuche",
+          "switch_retry_delay": "Pause zwischen Schaltversuchen in Sekunden",
+          "night_start": "Nachtmodus Startstunde",
+          "night_end": "Nachtmodus Endstunde"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zum AdvanSol-Controller nicht möglich."
+    },
+    "abort": {
+      "already_configured": "Dieser AdvanSol-Controller ist bereits eingerichtet."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "AdvanSol Optimierer Optionen",
+        "data": {
+          "poll_interval": "Abfrageintervall in Sekunden",
+          "request_timeout": "Anfrage-Timeout in Sekunden",
+          "switch_retries": "Schaltversuche",
+          "switch_retry_delay": "Pause zwischen Schaltversuchen in Sekunden",
+          "night_start": "Nachtmodus Startstunde",
+          "night_end": "Nachtmodus Endstunde"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "controller_serial": { "name": "Controller Seriennummer" },
+      "module_count": { "name": "Anzahl Optimierer" },
+      "output_voltage": { "name": "Ausgangsspannung" },
+      "output_current": { "name": "Ausgangsstrom" },
+      "power": { "name": "Leistung" },
+      "energy": { "name": "Gesamtertrag" },
+      "input_voltage": { "name": "Eingangsspannung" },
+      "input_current": { "name": "Eingangsstrom" },
+      "temperature": { "name": "Temperatur" },
+      "mos": { "name": "MOS Status" },
+      "software": { "name": "Softwareversion" },
+      "hardware": { "name": "Hardwareversion" },
+      "serial_number": { "name": "Seriennummer" },
+      "raw": { "name": "Raw Antwort" }
+    },
+    "binary_sensor": {
+      "connection": { "name": "Verbindung" },
+      "night_mode": { "name": "Nachtmodus" }
+    },
+    "switch": {
+      "optimizer_switch": { "name": "MOS" }
+    }
+  }
+}

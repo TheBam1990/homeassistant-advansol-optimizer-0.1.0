@@ -1,0 +1,66 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "AdvanSol Optimizer",
+        "description": "Connect to the TCP RS485 bridge used by the AdvanSol optimizer controller.",
+        "data": {
+          "host": "Host",
+          "tcp_port": "TCP port",
+          "poll_interval": "Polling interval in seconds",
+          "request_timeout": "Request timeout in seconds",
+          "switch_retries": "Switch command retries",
+          "switch_retry_delay": "Delay between switch retries in seconds",
+          "night_start": "Night mode start hour",
+          "night_end": "Night mode end hour"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to the AdvanSol controller."
+    },
+    "abort": {
+      "already_configured": "This AdvanSol controller is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "AdvanSol Optimizer options",
+        "data": {
+          "poll_interval": "Polling interval in seconds",
+          "request_timeout": "Request timeout in seconds",
+          "switch_retries": "Switch command retries",
+          "switch_retry_delay": "Delay between switch retries in seconds",
+          "night_start": "Night mode start hour",
+          "night_end": "Night mode end hour"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "controller_serial": { "name": "Controller serial number" },
+      "module_count": { "name": "Module count" },
+      "output_voltage": { "name": "Output voltage" },
+      "output_current": { "name": "Output current" },
+      "power": { "name": "Power" },
+      "energy": { "name": "Total energy" },
+      "input_voltage": { "name": "Input voltage" },
+      "input_current": { "name": "Input current" },
+      "temperature": { "name": "Temperature" },
+      "mos": { "name": "MOS status" },
+      "software": { "name": "Software version" },
+      "hardware": { "name": "Hardware version" },
+      "serial_number": { "name": "Serial number" },
+      "raw": { "name": "Raw response" }
+    },
+    "binary_sensor": {
+      "connection": { "name": "Connection" },
+      "night_mode": { "name": "Night mode" }
+    },
+    "switch": {
+      "optimizer_switch": { "name": "MOS" }
+    }
+  }
+}
