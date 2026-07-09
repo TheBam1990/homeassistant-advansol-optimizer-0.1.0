@@ -1,9 +1,7 @@
 {
   "name": "AdvanSol Optimizer",
   "domains": [
-    "binary_sensor",
-    "sensor",
-    "switch"
+    "advansol_optimizer"
   ],
   "render_readme": true,
   "homeassistant": "2024.6.0"
