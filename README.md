@@ -25,6 +25,24 @@ This project is a Home Assistant port of the ioBroker adapter `iobroker.advansol
 
 ## Installation
 
+### HACS custom repository
+
+1. Open HACS.
+2. Open **Integrations**.
+3. Open the three-dot menu and choose **Custom repositories**.
+4. Add this repository URL:
+
+```text
+https://github.com/TheBam1990/homeassistant-advansol-optimizer-0.1.0
+```
+
+5. Select category **Integration**.
+6. Install **AdvanSol Optimizer** and restart Home Assistant.
+
+If HACS reports **401 Unauthorized**, Home Assistant cannot authenticate against the GitHub API. The repository is public, so this normally means the HACS GitHub token/session is invalid or rate-limited. Re-authenticate HACS with GitHub or add a valid GitHub token in HACS, then retry.
+
+### Manual installation
+
 Copy the folder:
 
 ```text
@@ -86,6 +104,6 @@ Per optimizer module:
 
 ## Notes
 
-The first setup validates the connection by reading the controller serial number. If the optimizers do not answer during the configured night period or there is no PV-side supply, setup can fail. In that case retry when the controller and modules are powered and reachable.
+By default, the first setup validates the connection by reading the controller serial number. If the optimizers do not answer during the configured night period or there is no PV-side supply, enable **Skip connection test during setup**. The integration will then load as disconnected and poll again later.
 
 The integration creates entities for modules found during startup. If modules are added or removed later, reload the integration or restart Home Assistant.

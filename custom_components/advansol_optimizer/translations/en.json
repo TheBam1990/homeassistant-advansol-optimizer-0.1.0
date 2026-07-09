@@ -12,7 +12,8 @@
           "switch_retries": "Switch command retries",
           "switch_retry_delay": "Delay between switch retries in seconds",
           "night_start": "Night mode start hour",
-          "night_end": "Night mode end hour"
+          "night_end": "Night mode end hour",
+          "skip_validation": "Skip connection test during setup"
         }
       }
     },

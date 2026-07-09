@@ -9,7 +9,6 @@ import logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.util import dt as dt_util
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
@@ -167,7 +166,19 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     try:
         await coordinator.async_config_entry_first_refresh()
     except UpdateFailed as err:
-        raise ConfigEntryNotReady(str(err)) from err
+        _LOGGER.warning(
+            "Initial AdvanSol update failed, loading integration as disconnected: %s",
+            err,
+        )
+        coordinator.async_set_updated_data(
+            {
+                "connected": False,
+                "controller_serial": None,
+                "modules": {},
+                "module_data": {},
+                "night_mode": False,
+            }
+        )
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)

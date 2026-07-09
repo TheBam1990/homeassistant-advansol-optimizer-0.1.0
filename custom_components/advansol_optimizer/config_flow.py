@@ -16,6 +16,7 @@ from .const import (
     CONF_NIGHT_START,
     CONF_POLL_INTERVAL,
     CONF_REQUEST_TIMEOUT,
+    CONF_SKIP_VALIDATION,
     CONF_SWITCH_RETRIES,
     CONF_SWITCH_RETRY_DELAY,
     CONF_TCP_PORT,
@@ -24,6 +25,7 @@ from .const import (
     DEFAULT_NIGHT_START,
     DEFAULT_POLL_INTERVAL,
     DEFAULT_REQUEST_TIMEOUT,
+    DEFAULT_SKIP_VALIDATION,
     DEFAULT_SWITCH_RETRIES,
     DEFAULT_SWITCH_RETRY_DELAY,
     DEFAULT_TCP_PORT,
@@ -46,19 +48,21 @@ class AdvansolConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             await self.async_set_unique_id(f"{user_input[CONF_HOST]}:{user_input[CONF_TCP_PORT]}")
             self._abort_if_unique_id_configured()
 
-            client = AdvansolClient(
-                user_input[CONF_HOST],
-                user_input[CONF_TCP_PORT],
-                user_input[CONF_REQUEST_TIMEOUT],
-                user_input[CONF_SWITCH_RETRIES],
-                user_input[CONF_SWITCH_RETRY_DELAY],
-            )
-            try:
-                controller_serial = await client.read_controller_serial()
-            except (AdvansolError, OSError, asyncio.TimeoutError):
-                errors["base"] = "cannot_connect"
-            finally:
-                await client.close()
+            controller_serial = user_input[CONF_HOST]
+            if not user_input.get(CONF_SKIP_VALIDATION, DEFAULT_SKIP_VALIDATION):
+                client = AdvansolClient(
+                    user_input[CONF_HOST],
+                    user_input[CONF_TCP_PORT],
+                    user_input[CONF_REQUEST_TIMEOUT],
+                    user_input[CONF_SWITCH_RETRIES],
+                    user_input[CONF_SWITCH_RETRY_DELAY],
+                )
+                try:
+                    controller_serial = await client.read_controller_serial()
+                except (AdvansolError, OSError, asyncio.TimeoutError):
+                    errors["base"] = "cannot_connect"
+                finally:
+                    await client.close()
 
             if not errors:
                 return self.async_create_entry(
@@ -92,6 +96,10 @@ class AdvansolConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     vol.Required(CONF_NIGHT_END, default=DEFAULT_NIGHT_END): vol.All(
                         vol.Coerce(int), vol.Range(min=0, max=23)
                     ),
+                    vol.Optional(
+                        CONF_SKIP_VALIDATION,
+                        default=DEFAULT_SKIP_VALIDATION,
+                    ): bool,
                 }
             ),
             errors=errors,
