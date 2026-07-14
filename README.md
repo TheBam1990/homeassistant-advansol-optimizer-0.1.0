@@ -94,7 +94,7 @@ In Home Assistant:
 
 Default values:
 
-- Host: `192.168.2.156`
+- Host: `192.0.2.1` (documentation example; replace it with your bridge address)
 - TCP port: `502`
 - Poll interval: `10` seconds
 - Request timeout: `5` seconds
