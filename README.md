@@ -57,6 +57,32 @@ to your Home Assistant configuration directory:
 
 Then restart Home Assistant.
 
+### Direct installation from GitHub on a Docker host
+
+The following example downloads the current `main` branch directly from GitHub. Run the commands on the Docker host as `root` (or prefix the Docker and file commands with `sudo`):
+
+```bash
+curl -fsSL \
+  https://github.com/TheBam1990/homeassistant-advansol-optimizer-0.1.0/archive/refs/heads/main.tar.gz \
+  -o /tmp/advansol-main.tar.gz
+tar -xzf /tmp/advansol-main.tar.gz -C /tmp
+mkdir -p /homeassistant/config/custom_components
+cp -a \
+  /tmp/homeassistant-advansol-optimizer-0.1.0-main/custom_components/advansol_optimizer \
+  /homeassistant/config/custom_components/
+docker exec homeassistant python3 -m homeassistant --script check_config -c /config
+docker restart homeassistant
+```
+
+In this example, the Home Assistant container is named `homeassistant` and the host directory `/homeassistant/config` is mounted as `/config`. Check and adjust both values for your installation:
+
+```bash
+docker ps --format '{{.Names}}'
+docker inspect homeassistant --format '{{json .Mounts}}'
+```
+
+After the restart, open **Settings** -> **Devices & services** -> **Add integration** and search for **AdvanSol Optimizer**.
+
 ## Setup
 
 In Home Assistant:
