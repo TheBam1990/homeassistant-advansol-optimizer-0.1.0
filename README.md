@@ -132,4 +132,4 @@ Per optimizer module:
 
 By default, the first setup validates the connection by reading the controller serial number. If the optimizers do not answer during the configured night period or there is no PV-side supply, enable **Skip connection test during setup**. The integration will then load as disconnected and poll again later.
 
-The integration creates entities for modules found during startup. If modules are added or removed later, reload the integration or restart Home Assistant.
+The integration creates entities for modules found during startup and automatically adds entities for modules discovered later. Removed modules remain in the Home Assistant entity registry so their history and custom names are preserved.

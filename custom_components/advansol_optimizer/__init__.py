@@ -106,6 +106,12 @@ class AdvansolCoordinator(DataUpdateCoordinator[AdvansolData]):
     async def _async_update_data(self) -> AdvansolData:
         if self.is_night_hour():
             self.night_mode = True
+            if not self.modules:
+                try:
+                    await self.async_discover()
+                except (AdvansolError, OSError, asyncio.TimeoutError) as err:
+                    await self.client.close()
+                    _LOGGER.debug("Module discovery during night mode failed: %s", err)
             return {
                 "connected": self.client.connected,
                 "controller_serial": self.controller_serial,

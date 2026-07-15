@@ -128,16 +128,34 @@ async def async_setup_entry(
 ) -> None:
     """Set up AdvanSol sensors."""
     coordinator: AdvansolCoordinator = hass.data[DOMAIN][entry.entry_id]
-    entities: list[SensorEntity] = [
-        AdvansolControllerSerialSensor(coordinator),
-        AdvansolModuleCountSensor(coordinator),
-    ]
-    entities.extend(
-        AdvansolModuleSensor(coordinator, module.index, description)
-        for module in coordinator.modules
-        for description in MODULE_SENSOR_DESCRIPTIONS
+    async_add_entities(
+        [
+            AdvansolControllerSerialSensor(coordinator),
+            AdvansolModuleCountSensor(coordinator),
+        ]
     )
-    async_add_entities(entities)
+
+    added_module_indexes: set[int] = set()
+
+    def async_add_new_modules() -> None:
+        """Add sensors for modules discovered after platform setup."""
+        new_modules = [
+            module
+            for module in coordinator.modules
+            if module.index not in added_module_indexes
+        ]
+        if not new_modules:
+            return
+
+        added_module_indexes.update(module.index for module in new_modules)
+        async_add_entities(
+            AdvansolModuleSensor(coordinator, module.index, description)
+            for module in new_modules
+            for description in MODULE_SENSOR_DESCRIPTIONS
+        )
+
+    async_add_new_modules()
+    entry.async_on_unload(coordinator.async_add_listener(async_add_new_modules))
 
 
 class AdvansolControllerSerialSensor(AdvansolEntity, SensorEntity):

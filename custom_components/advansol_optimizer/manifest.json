@@ -10,5 +10,5 @@
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/TheBam1990/homeassistant-advansol-optimizer-0.1.0/issues",
   "requirements": [],
-  "version": "0.1.1"
+  "version": "0.1.2"
 }

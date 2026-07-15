@@ -19,9 +19,25 @@ async def async_setup_entry(
 ) -> None:
     """Set up AdvanSol switches."""
     coordinator: AdvansolCoordinator = hass.data[DOMAIN][entry.entry_id]
-    async_add_entities(
-        AdvansolModuleSwitch(coordinator, module.index) for module in coordinator.modules
-    )
+    added_module_indexes: set[int] = set()
+
+    def async_add_new_modules() -> None:
+        """Add switches for modules discovered after platform setup."""
+        new_modules = [
+            module
+            for module in coordinator.modules
+            if module.index not in added_module_indexes
+        ]
+        if not new_modules:
+            return
+
+        added_module_indexes.update(module.index for module in new_modules)
+        async_add_entities(
+            AdvansolModuleSwitch(coordinator, module.index) for module in new_modules
+        )
+
+    async_add_new_modules()
+    entry.async_on_unload(coordinator.async_add_listener(async_add_new_modules))
 
 
 class AdvansolModuleSwitch(AdvansolModuleEntity, SwitchEntity):
