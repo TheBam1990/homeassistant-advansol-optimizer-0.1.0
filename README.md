@@ -133,3 +133,5 @@ Per optimizer module:
 By default, the first setup validates the connection by reading the controller serial number. If the optimizers do not answer during the configured night period or there is no PV-side supply, enable **Skip connection test during setup**. The integration will then load as disconnected and poll again later.
 
 The integration creates entities for modules found during startup and automatically adds entities for modules discovered later. Removed modules remain in the Home Assistant entity registry so their history and custom names are preserved.
+
+Home Assistant limits entity states to 255 characters. The raw-response sensor therefore uses the first 255 characters as its state and exposes the full frame in its `complete_response` attribute.

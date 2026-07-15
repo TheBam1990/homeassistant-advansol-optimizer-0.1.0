@@ -116,7 +116,7 @@ MODULE_SENSOR_DESCRIPTIONS: tuple[AdvansolModuleSensorDescription, ...] = (
     AdvansolModuleSensorDescription(
         key="raw",
         translation_key="raw",
-        value_fn=lambda data: data.raw,
+        value_fn=lambda data: data.raw[:255],
     ),
 )
 
@@ -211,3 +211,10 @@ class AdvansolModuleSensor(AdvansolModuleEntity, SensorEntity):
         if self.module_data is None:
             return None
         return self.entity_description.value_fn(self.module_data)
+
+    @property
+    def extra_state_attributes(self) -> dict[str, str] | None:
+        """Expose the complete raw response without Home Assistant's state limit."""
+        if self.entity_description.key != "raw" or self.module_data is None:
+            return None
+        return {"complete_response": self.module_data.raw}
